@@ -1,8 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Form from "./Form";
 import React from "react";
-
+import { UsersProvider, UsersContext } from "../context/UserContext";
 describe("Form Component Tests", () => {
+  const addUser = jest.fn();
+
+  const FormUser = () => {
+    return (
+      <UsersContext.Provider value={{ addUser }}>
+        <Form />
+      </UsersContext.Provider>
+    );
+  };
   test("should have input diabled if all fields are not filled", () => {
     render(<Form />);
     const saveButton = screen.getByText("Sauvegarder");
@@ -106,7 +115,7 @@ describe("Form Component Tests", () => {
   );
 
   test("should show success message when form is valid", async () => {
-    render(<Form />);
+    render(<FormUser />);
     fireEvent.change(screen.getByPlaceholderText("Nom"), {
       target: { value: "Realini" },
     });
@@ -128,6 +137,15 @@ describe("Form Component Tests", () => {
     fireEvent.click(screen.getByText("Sauvegarder"));
     const successMessage = await screen.findByText(
       "Formulaire sauvegardé avec succès !"
+    );
+    expect(addUser).toHaveBeenCalledTimes(1);
+    expect(addUser).toHaveBeenCalledWith(
+      "Realini",
+      "Christophe",
+      "chris@gmail.com",
+      "2001-06-01",
+      "Nice",
+      "06000"
     );
     expect(successMessage).toBeInTheDocument();
   });
