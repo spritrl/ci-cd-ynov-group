@@ -54,7 +54,11 @@ function Modal({ user, handleCloseModal }) {
             gap: 5,
           }}
         >
-          <button style={{ height: 30 }} onClick={() => validerChamps()}>
+          <button
+            style={{ height: 30 }}
+            name={"supprimer"}
+            onClick={() => validerChamps()}
+          >
             Supprimer
           </button>
           <button style={{ height: 30 }} onClick={handleCloseModal}>
