@@ -24,7 +24,7 @@ function Modal({ user, handleCloseModal }) {
         height: "100vh",
         width: "100%",
         backgroundColor: "var(--background-color)",
-        opacity: 0.9,
+        opacity: 1,
         zIndex: 9999,
         position: "absolute",
       }}

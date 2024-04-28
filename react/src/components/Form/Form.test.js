@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Form from "./Form";
 import React from "react";
-import { UsersProvider, UsersContext } from "../context/UserContext";
+import { UsersContext } from "../context/UserContext";
 describe("Form Component Tests", () => {
   const addUser = jest.fn();
 

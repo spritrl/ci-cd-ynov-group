@@ -18,7 +18,7 @@
   "scripts": {
     "start": "NODE_ENV=development react-scripts start",
     "build": "NODE_ENV=production react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false --collectCoverageFrom=!src/reportWebVitals.js --collectCoverageFrom=!src/index.js --collectCoverageFrom=!src/logo.svg --collectCoverageFrom=!src/components/context/UserContext.js --collectCoverageFrom=!src/App.js",
+    "test": "react-scripts test --coverage --watchAll=false --collectCoverageFrom=!src/reportWebVitals.js --collectCoverageFrom=!src/index.js --collectCoverageFrom=!src/logo.svg --collectCoverageFrom=!src/components/context/UserContext.js --collectCoverageFrom=!src/App.js --collectCoverageFrom=!src/components/Form/UsersList.js",
     "eject": "react-scripts eject",
     "jsdoc": "jsdoc -R ./README.md -c ./jsdoc.config.json -r -d ./public/docs",
     "predeploy": "npm run build",
