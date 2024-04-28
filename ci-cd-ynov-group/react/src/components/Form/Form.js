@@ -8,8 +8,10 @@ import {
   validatePostalCode,
 } from "./utils/validator";
 import TextField from "./TextField";
+import { UsersContext } from "../context/UserContext";
 
 function Form() {
+  const { users, addUser } = React.useContext(UsersContext);
   const [port, setPort] = React.useState("3001");
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -18,6 +20,7 @@ function Form() {
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
   const [errors, setErrors] = React.useState({});
+  const [showUsersList, setShowUsersList] = React.useState(false);
 
   const validerChamps = () => {
     const newErrors = {};
@@ -36,55 +39,10 @@ function Form() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const createUser = async (
-    name,
-    surname,
-    mail,
-    birthDate,
-    city,
-    postalCode
-  ) => {
-    /**
-      const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        "name": "dddd",
-        "surname": "dddd",
-        "email": "dddd",
-        "birthDate": "dddd",
-        "city": "dddd",
-        "postalCode": "dddd",
-      }),
-    };
-    const response = await fetch(`http://localhost:3001/users`, options);
-     */
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        surname,
-        email: mail,
-        birthDate,
-        city,
-        postalCode,
-      }),
-    };
-    const response = await fetch(`http://localhost:${port}/users`, options);
-    console.log(response);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validerChamps()) {
-      //const formData = { name, surname, mail, birthDate, city, postalCode };
-      // localStorage.setItem('formData', JSON.stringify(formData));
-      createUser(name, surname, mail, birthDate, city, postalCode);
+      addUser(name, surname, mail, birthDate, city, postalCode, port);
 
       toast.success("Formulaire sauvegardé avec succès !");
 
@@ -106,19 +64,67 @@ function Form() {
   return (
     <div
       style={{
-        backgroundColor: "black",
-        height: "100vh",
+        backgroundColor: "var(--background-color)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
+        gap: 10,
       }}
     >
+      <div
+        style={{
+          backgroundColor: "var(--card-background-color)",
+          color: "var(--card-text-color)",
+          padding: "10px 20px",
+          borderRadius: "10px",
+          width: "20%",
+          minWidth: "300px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          cursor: "pointer",
+        }}
+        onClick={() => setShowUsersList(!showUsersList)}
+      >
+        <div>Users Lists</div>
+        <div>
+          {users.length}({showUsersList ? "hide" : "show"})
+        </div>
+      </div>
+      {showUsersList && (
+        <>
+          {users.map((user, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: "var(--card-background-color)",
+                color: "var(--card-text-color)",
+                padding: "20px",
+                borderRadius: "10px",
+                width: "20%",
+                minWidth: "300px",
+                marginBottom: 5,
+              }}
+            >
+              <div style={{ display: "flex", gap: 5 }}>
+                <div>Nom : {user.name}</div>-<div>Prenom : {user.surname}</div>
+              </div>
+              <div style={{ display: "flex", gap: 5 }}>
+                <div>Ville : {user.city}</div>-
+                <div>Code postal : {user.postalCode}</div>
+              </div>
+              <div>E-mail : {user.email}</div>
+              <div>Date de naissance : {user.birthDate}</div>
+            </div>
+          ))}
+        </>
+      )}
       <div
         style={{
           backgroundColor: "white",
           padding: "20px",
           borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
           width: "20%",
           minWidth: "300px",
         }}
