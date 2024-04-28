@@ -11,8 +11,7 @@ export const UsersProvider = ({ children }) => {
     setUsers(data);
   };
 
-  const deleteUser = async (userId) => {
-    const password = prompt("Enter the delete password:");
+  const deleteUser = async (userId, password, callback) => {
     if (password) {
       try {
         const response = await fetch(`http://localhost:3001/users/${userId}`, {
@@ -23,6 +22,9 @@ export const UsersProvider = ({ children }) => {
           body: JSON.stringify({ password }),
         });
         if (response.status === 204) {
+          if (callback) {
+            callback.good();
+          }
           setUsers(
             users.filter((user) => {
               if (user._id) {
@@ -33,9 +35,16 @@ export const UsersProvider = ({ children }) => {
               return false;
             })
           );
+        } else {
+          if (callback) {
+            callback.bad();
+          }
         }
       } catch (error) {
         console.error("Error deleting user:", error);
+        if (callback) {
+          callback.bad();
+        }
       }
     }
   };
@@ -60,8 +69,13 @@ export const UsersProvider = ({ children }) => {
     setUsers([data, ...users]);
   };
 
+  React.useEffect(() => {
+    fetchUsers();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <UsersContext.Provider value={{ deleteUser, addUser, users, fetchUsers }}>
+    <UsersContext.Provider value={{ deleteUser, addUser, users }}>
       {children}
     </UsersContext.Provider>
   );

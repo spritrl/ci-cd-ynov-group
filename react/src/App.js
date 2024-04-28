@@ -2,18 +2,28 @@ import React from "react";
 import "./App.css";
 import { UsersContext } from "./components/context/UserContext";
 import Form from "./components/Form/Form";
+import Modal from "./components/Form/Modal";
 
 function App() {
   const [showUsersList, setShowUsersList] = React.useState(false);
-  const { users, deleteUser, fetchUsers } = React.useContext(UsersContext);
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState(null);
+  const { users } = React.useContext(UsersContext);
 
-  React.useEffect(() => {
-    fetchUsers();
-    // eslint-disable-next-line
-  }, []);
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+    setShowModal(false);
+  };
 
+  const handleOpenModal = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
   return (
     <>
+      {showModal && (
+        <Modal handleCloseModal={handleCloseModal} user={selectedUser} />
+      )}
       <div
         style={{
           backgroundColor: "var(--card-background-color)",
@@ -49,6 +59,7 @@ function App() {
                 minWidth: "300px",
                 marginBottom: 5,
               }}
+              name={`${user.email}-card`}
             >
               <div style={{ display: "flex", gap: 5 }}>
                 <div>Nom : {user.name}</div>-<div>Prenom : {user.surname}</div>
@@ -61,8 +72,8 @@ function App() {
               <div>Date de naissance : {user.birthDate}</div>
               <div
                 style={{ backgroundColor: "red", cursor: "pointer" }}
-                onClick={() => deleteUser(user.id ?? user._id)}
-                name={"delete-button"}
+                onClick={() => handleOpenModal(user)}
+                name={`delete-button-${user.email}`}
               >
                 Delete
               </div>
