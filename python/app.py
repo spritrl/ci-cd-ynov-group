@@ -75,4 +75,4 @@ def delete_user(user_id):
         return jsonify({'error': 'Invalid password'}), 401
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3002)
+    app.run(host='0.0.0.0', port=3001)
