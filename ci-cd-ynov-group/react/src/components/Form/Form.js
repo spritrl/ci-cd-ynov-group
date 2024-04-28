@@ -11,7 +11,8 @@ import TextField from "./TextField";
 import { UsersContext } from "../context/UserContext";
 
 function Form() {
-  const { users, addUser } = React.useContext(UsersContext);
+  const { users, addUser, deleteUser, fetchUsers } =
+    React.useContext(UsersContext);
   const [port, setPort] = React.useState("3001");
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -58,6 +59,9 @@ function Form() {
     }
   };
 
+  React.useEffect(() => {
+    fetchUsers(port);
+  }, []);
   const isFormValid =
     name && surname && mail && birthDate && city && postalCode;
 
@@ -116,6 +120,9 @@ function Form() {
               </div>
               <div>E-mail : {user.email}</div>
               <div>Date de naissance : {user.birthDate}</div>
+              <div onClick={() => deleteUser(user.id ?? user._id, port)}>
+                Delete
+              </div>
             </div>
           ))}
         </>

@@ -5,8 +5,8 @@ export const UsersContext = createContext();
 export const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
 
-  const fetchUsers = async () => {
-    const response = await fetch(`http://localhost:3001/users`);
+  const fetchUsers = async (port) => {
+    const response = await fetch(`http://localhost:3002/users`);
     const data = await response.json();
     console.log(data);
     setUsers(data);
@@ -63,12 +63,8 @@ export const UsersProvider = ({ children }) => {
     setUsers([data, ...users]);
   };
 
-  React.useEffect(() => {
-    fetchUsers();
-  }, []);
-
   return (
-    <UsersContext.Provider value={{ deleteUser, addUser, users }}>
+    <UsersContext.Provider value={{ deleteUser, addUser, users, fetchUsers }}>
       {children}
     </UsersContext.Provider>
   );
