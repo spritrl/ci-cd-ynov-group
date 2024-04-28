@@ -44,7 +44,7 @@ jobs:
 
       # Docker containers mangodb - nodejs
       - name: Build the stack mangodb - nodejs
-        run: docker-compose -f docker-compose-nodejs.yml up
+        run: docker-compose -f docker-compose-nodejs.yml up -d
       - name: Run e2e tests with cypress
         run: |
           cd ./react
@@ -54,7 +54,7 @@ jobs:
 
       # Docker containers mysql - python
       - name: Build the stack mysql - python
-        run: docker-compose -f docker-compose-python.yml up
+        run: docker-compose -f docker-compose-python.yml up -d
       - name: Run e2e tests with cypress
         run: |
           cd ./react
