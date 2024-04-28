@@ -20,14 +20,11 @@ export const UsersProvider = ({ children }) => {
       setUsers(
         users.filter((user) => {
           if (user._id) {
-            if (user._id !== userId) {
-              return user;
-            }
+            return user._id !== userId;
           } else if (user.id) {
-            if (user.id !== userId) {
-              return user;
-            }
+            return user.id !== userId;
           }
+          return false;
         })
       );
     } catch (error) {

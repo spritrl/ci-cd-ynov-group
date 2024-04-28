@@ -7,9 +7,12 @@ function App() {
   const port = "3001";
   const [showUsersList, setShowUsersList] = React.useState(false);
   const { users, deleteUser, fetchUsers } = React.useContext(UsersContext);
+
   React.useEffect(() => {
     fetchUsers(port);
+    // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <div

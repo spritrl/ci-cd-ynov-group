@@ -28,6 +28,10 @@ jobs:
         run: |
           cd react
           npm test
+      - name: Create
+        run: |
+          cd react
+          npm run jsdoc
       - name: Build React application
         run: |
           cd react
