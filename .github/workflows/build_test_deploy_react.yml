@@ -60,4 +60,4 @@ jobs:
           cd ./react
           npm run cypress
       - name: Stop the stack mysql - python
-        run: docker-compose -f docker-compose-python down
+        run: docker-compose -f docker-compose-python.yml down
