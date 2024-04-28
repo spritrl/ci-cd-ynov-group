@@ -8,10 +8,8 @@ import {
   validatePostalCode,
 } from "./utils/validator";
 import TextField from "./TextField";
-import { UsersContext } from "../context/UserContext";
 
 function Form() {
-  const { addUser } = React.useContext(UsersContext);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [mail, setMail] = React.useState("");
@@ -35,6 +33,24 @@ function Form() {
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
+  };
+
+  const addUser = async (name, surname, mail, birthDate, city, postalCode) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        surname,
+        email: mail,
+        birthDate,
+        city,
+        postalCode,
+      }),
+    };
+    await fetch(`http://localhost:3001/users`, options);
   };
 
   const handleSubmit = (e) => {
