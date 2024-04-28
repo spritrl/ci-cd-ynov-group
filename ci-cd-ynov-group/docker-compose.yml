@@ -1,0 +1,46 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - ./data/mongodb:/data/db
+
+  api-nodejs:
+    build: ./nodejs
+    depends_on:
+      - mongodb
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/mydb
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  api-python:
+    build: ./python
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DB=mydb
+
+  frontend:
+    build: ./react
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-nodejs
+      - api-python

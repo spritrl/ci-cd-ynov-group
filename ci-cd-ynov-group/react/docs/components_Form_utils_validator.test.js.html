@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Form/utils/validator.test.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Form/utils/validator.test.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  validateAndCheckAge,
+  validatePostalCode,
+  validateName,
+  validateMail,
+} from './validator';
+
+describe('Validator Functions', () => {
+  /**
+   * @function validateAndCheckAge
+   */
+  describe('validateAndCheckAge', () => {
+    test('should return false for invalid date format', () => {
+      expect(validateAndCheckAge('not-a-date')).toBeFalsy();
+    });
+
+    test('should return false for age under 18', () => {
+      const underageDate = new Date();
+      underageDate.setFullYear(underageDate.getFullYear() - 17);
+      expect(validateAndCheckAge(underageDate.toISOString())).toBeFalsy();
+    });
+
+    test('should return true for age 18 and over', () => {
+      const ofAgeDate = new Date();
+      ofAgeDate.setFullYear(ofAgeDate.getFullYear() - 18);
+      expect(validateAndCheckAge(ofAgeDate.toISOString())).toBeTruthy();
+    });
+  });
+
+  /**
+   * @function validatePostalCode
+   */
+  describe('validatePostalCode', () => {
+    const validPostalCode = ['12345', '06000', '91000', '83000'];
+    test.each(validPostalCode)(
+      'should return true for a valid postal code',
+      (postalCode) => {
+        expect(validatePostalCode(postalCode)).toBeTruthy();
+      }
+    );
+
+    test('should return false for a short postal code', () => {
+      expect(validatePostalCode('1234')).toBeFalsy();
+    });
+
+    test('should return false for a long postal code', () => {
+      expect(validatePostalCode('123456')).toBeFalsy();
+    });
+
+    test('should return false for a postal code containing letter', () => {
+      expect(validatePostalCode('abcd5')).toBeFalsy();
+    });
+
+    test('should return false for an empty string', () => {
+      expect(validatePostalCode('')).toBeFalsy();
+    });
+  });
+
+  /**
+   * @function validateName
+   */
+  describe('validateName', () => {
+    const validNames = ['Jean', 'Christophe', 'Leo', 'Lucas'];
+    test.each(validNames)('should return true for a classic name', (name) => {
+      expect(validateName(name)).toBeTruthy();
+    });
+
+    test('should return true for a valid name with -', () => {
+      expect(validateName('Jean-Luc')).toBeTruthy();
+    });
+
+    test('should return true for a valid name with spaces', () => {
+      expect(validateName('Marie Claire')).toBeTruthy();
+    });
+
+    test('should return true for a name with accent', () => {
+      expect(validateName('Léo')).toBeTruthy();
+    });
+
+    test('should return false for a name with numbers', () => {
+      expect(validateName('Jean123')).toBeFalsy();
+    });
+
+    test('should return false for a name with special characters', () => {
+      expect(validateName('Jean-Luc!')).toBeFalsy();
+    });
+
+    test('should return false for an empty string', () => {
+      expect(validateName('')).toBeFalsy();
+    });
+  });
+});
+
+/**
+ * @function validateMail
+ */
+describe('validateMail', () => {
+  const validMailAddress = [
+    'email@example.com',
+    'christophe@gmail.com',
+    'leo@gmail.com',
+    'lucas@gmail.com',
+  ];
+  test.each(validMailAddress)(
+    'should return true for a valid email',
+    (mail) => {
+      expect(validateMail(mail)).toBeTruthy();
+    }
+  );
+
+  test('should return true for a valid email with dot in first part', () => {
+    expect(validateMail('name.surname@example-domain.com')).toBeTruthy();
+  });
+
+  test('should return true for a valid email with (-) in first part', () => {
+    expect(validateMail('name-surname@example-domain.com')).toBeTruthy();
+  });
+
+  test('should return true for a valid email with subdomain', () => {
+    expect(validateMail('email@example.domain.com')).toBeTruthy();
+  });
+
+  test('should return true for a valid email with composed domain', () => {
+    expect(validateMail('email@example-domain.com')).toBeTruthy();
+  });
+
+  test('should return false for email without domain extension', () => {
+    expect(validateMail('email@example')).toBeFalsy();
+  });
+
+  test('should return false for email without dot', () => {
+    expect(validateMail('email@.com')).toBeFalsy();
+  });
+
+  test('should return false for email with double dot', () => {
+    expect(validateMail('email@example..com')).toBeFalsy();
+  });
+
+  test('should return false for email without domain', () => {
+    expect(validateMail('email@.com')).toBeFalsy();
+  });
+
+  test('should return false for email without local part', () => {
+    expect(validateMail('@example.com')).toBeFalsy();
+  });
+
+  test('should return false for email without @', () => {
+    expect(validateMail('email.com')).toBeFalsy();
+  });
+
+  test('should return false for empty string', () => {
+    expect(validateMail('')).toBeFalsy();
+  });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#calculateAge">calculateAge</a></li><li><a href="global.html#validateAndCheckAge">validateAndCheckAge</a></li><li><a href="global.html#validateMail">validateMail</a></li><li><a href="global.html#validateName">validateName</a></li><li><a href="global.html#validatePostalCode">validatePostalCode</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Feb 11 2024 22:29:01 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
