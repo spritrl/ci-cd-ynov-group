@@ -12,6 +12,6 @@ RUN chmod +x wait-for-mysql.sh
 
 COPY . .
 
-EXPOSE 3002
+EXPOSE 3001
 
 CMD ["python", "app.py"]

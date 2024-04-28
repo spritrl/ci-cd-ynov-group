@@ -4,12 +4,11 @@ import { UsersContext } from "./components/context/UserContext";
 import Form from "./components/Form/Form";
 
 function App() {
-  const port = "3002";
   const [showUsersList, setShowUsersList] = React.useState(false);
   const { users, deleteUser, fetchUsers } = React.useContext(UsersContext);
 
   React.useEffect(() => {
-    fetchUsers(port);
+    fetchUsers();
     // eslint-disable-next-line
   }, []);
 
@@ -28,6 +27,7 @@ function App() {
           justifyContent: "space-between",
           cursor: "pointer",
         }}
+        name={"user-list-card"}
         onClick={() => setShowUsersList(!showUsersList)}
       >
         <div>Users Lists</div>
@@ -62,6 +62,7 @@ function App() {
               <div
                 style={{ backgroundColor: "red", cursor: "pointer" }}
                 onClick={() => deleteUser(user.id ?? user._id)}
+                name={"delete-button"}
               >
                 Delete
               </div>

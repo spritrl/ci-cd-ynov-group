@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  api-python:
+    build: ./python
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DB=mydb
+    env_file:
+      - .env
+
+  frontend:
+    build: ./react
+    volumes:
+      - ./react:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-python

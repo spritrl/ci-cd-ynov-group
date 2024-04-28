@@ -4,9 +4,8 @@ export const UsersContext = createContext();
 
 export const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  const port = 3002;
   const fetchUsers = async () => {
-    const response = await fetch(`http://localhost:${port}/users`);
+    const response = await fetch(`http://localhost:3001/users`);
     const data = await response.json();
     console.log(data);
     setUsers(data);
@@ -16,16 +15,13 @@ export const UsersProvider = ({ children }) => {
     const password = prompt("Enter the delete password:");
     if (password) {
       try {
-        const response = await fetch(
-          `http://localhost:${port}/users/${userId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password }),
-          }
-        );
+        const response = await fetch(`http://localhost:3001/users/${userId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password }),
+        });
         if (response.status === 204) {
           setUsers(
             users.filter((user) => {
@@ -59,7 +55,7 @@ export const UsersProvider = ({ children }) => {
         postalCode,
       }),
     };
-    const response = await fetch(`http://localhost:${port}/users`, options);
+    const response = await fetch(`http://localhost:3001/users`, options);
     const data = await response.json();
     setUsers([data, ...users]);
   };
