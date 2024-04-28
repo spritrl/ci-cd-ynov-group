@@ -1,5 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Form from "./Form";
+import { UsersContext } from "../context/UserContext";
+import React from "react";
+jest.mock("../context/UserContext");
+
 describe("Form Component Tests", () => {
   test("should have input diabled if all fields are not filled", () => {
     render(<Form />);
@@ -105,6 +109,9 @@ describe("Form Component Tests", () => {
   );
 
   test("should show success message when form is valid", async () => {
+    const addUserMock = jest.fn();
+    jest.spyOn(React, "useContext").mockReturnValue({ addUser: addUserMock });
+
     render(<Form />);
     fireEvent.change(screen.getByPlaceholderText("Nom"), {
       target: { value: "Realini" },
@@ -129,5 +136,13 @@ describe("Form Component Tests", () => {
       "Formulaire sauvegardé avec succès !"
     );
     expect(successMessage).toBeInTheDocument();
+    expect(addUserMock).toHaveBeenCalledWith(
+      "Realini",
+      "Christophe",
+      "chris@gmail.com",
+      "2001-06-01",
+      "Nice",
+      "06000"
+    );
   });
 });

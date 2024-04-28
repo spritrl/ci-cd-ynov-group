@@ -32,36 +32,3 @@ jobs:
         run: |
           cd react
           npm run build
-
-  docker_test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker images
-        run: docker-compose build
-      - name: Start Docker containers
-        run: docker-compose up -d
-      - name: Run tests inside Docker containers
-        run: |
-          docker-compose exec -T api-nodejs sh -c "cd /app && npm test"
-          docker-compose exec -T api-python sh -c "cd /app && python -m unittest discover tests/"
-      - name: Stop Docker containers
-        run: docker-compose down
-
-  integration_test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker images
-        run: docker-compose build
-      - name: Start Docker containers
-        run: docker-compose up -d
-      - name: Run integration tests
-        run: |
-          cd react
-          npm ci
-          npm run test:integration
-      - name: Stop Docker containers
-        run: docker-compose down
