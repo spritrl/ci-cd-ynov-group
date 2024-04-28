@@ -1,18 +1,18 @@
 import React, { createContext, useState } from "react";
 
-export const UsersContext = createContext();
+export const UsersContext = createContext("");
 
 export const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-
-  const fetchUsers = async (port) => {
-    const response = await fetch(`http://localhost:3002/users`);
+  const port = 3001;
+  const fetchUsers = async () => {
+    const response = await fetch(`http://localhost:${port}/users`);
     const data = await response.json();
     console.log(data);
     setUsers(data);
   };
 
-  const deleteUser = async (userId, port) => {
+  const deleteUser = async (userId) => {
     try {
       await fetch(`http://localhost:${port}/users/${userId}`, {
         method: "DELETE",
@@ -35,15 +35,7 @@ export const UsersProvider = ({ children }) => {
     }
   };
 
-  const addUser = async (
-    name,
-    surname,
-    mail,
-    birthDate,
-    city,
-    postalCode,
-    port
-  ) => {
+  const addUser = async (name, surname, mail, birthDate, city, postalCode) => {
     const options = {
       method: "POST",
       headers: {

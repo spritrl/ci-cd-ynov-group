@@ -11,9 +11,7 @@ import TextField from "./TextField";
 import { UsersContext } from "../context/UserContext";
 
 function Form() {
-  const { users, addUser, deleteUser, fetchUsers } =
-    React.useContext(UsersContext);
-  const [port, setPort] = React.useState("3001");
+  const { addUser } = React.useContext(UsersContext);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [mail, setMail] = React.useState("");
@@ -21,7 +19,6 @@ function Form() {
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
   const [errors, setErrors] = React.useState({});
-  const [showUsersList, setShowUsersList] = React.useState(false);
 
   const validerChamps = () => {
     const newErrors = {};
@@ -43,10 +40,8 @@ function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validerChamps()) {
-      addUser(name, surname, mail, birthDate, city, postalCode, port);
-
       toast.success("Formulaire sauvegardé avec succès !");
-
+      addUser(name, surname, mail, birthDate, city, postalCode);
       setName("");
       setSurname("");
       setMail("");
@@ -58,10 +53,6 @@ function Form() {
       toast.error("Des erreurs sont présentes dans le formulaire.");
     }
   };
-
-  React.useEffect(() => {
-    fetchUsers(port);
-  }, []);
   const isFormValid =
     name && surname && mail && birthDate && city && postalCode;
 
@@ -78,57 +69,6 @@ function Form() {
     >
       <div
         style={{
-          backgroundColor: "var(--card-background-color)",
-          color: "var(--card-text-color)",
-          padding: "10px 20px",
-          borderRadius: "10px",
-          width: "20%",
-          minWidth: "300px",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          cursor: "pointer",
-        }}
-        onClick={() => setShowUsersList(!showUsersList)}
-      >
-        <div>Users Lists</div>
-        <div>
-          {users.length}({showUsersList ? "hide" : "show"})
-        </div>
-      </div>
-      {showUsersList && (
-        <>
-          {users.map((user, index) => (
-            <div
-              key={index}
-              style={{
-                backgroundColor: "var(--card-background-color)",
-                color: "var(--card-text-color)",
-                padding: "20px",
-                borderRadius: "10px",
-                width: "20%",
-                minWidth: "300px",
-                marginBottom: 5,
-              }}
-            >
-              <div style={{ display: "flex", gap: 5 }}>
-                <div>Nom : {user.name}</div>-<div>Prenom : {user.surname}</div>
-              </div>
-              <div style={{ display: "flex", gap: 5 }}>
-                <div>Ville : {user.city}</div>-
-                <div>Code postal : {user.postalCode}</div>
-              </div>
-              <div>E-mail : {user.email}</div>
-              <div>Date de naissance : {user.birthDate}</div>
-              <div onClick={() => deleteUser(user.id ?? user._id, port)}>
-                Delete
-              </div>
-            </div>
-          ))}
-        </>
-      )}
-      <div
-        style={{
           backgroundColor: "white",
           padding: "20px",
           borderRadius: "10px",
@@ -140,13 +80,6 @@ function Form() {
           onSubmit={handleSubmit}
           style={{ display: "flex", gap: 10, flexDirection: "column" }}
         >
-          <TextField
-            error={errors.name}
-            inputValue={port}
-            onChange={(e) => setPort(e.target.value)}
-            title={"Port"}
-            name={"port"}
-          />
           <TextField
             error={errors.birthDate}
             inputValue={birthDate}
