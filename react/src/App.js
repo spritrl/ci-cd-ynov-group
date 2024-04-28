@@ -4,7 +4,7 @@ import { UsersContext } from "./components/context/UserContext";
 import Form from "./components/Form/Form";
 
 function App() {
-  const [port, setPort] = React.useState("3001");
+  const port = "3001";
   const [showUsersList, setShowUsersList] = React.useState(false);
   const { users, deleteUser, fetchUsers } = React.useContext(UsersContext);
   React.useEffect(() => {
