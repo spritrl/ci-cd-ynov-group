@@ -14,6 +14,8 @@ services:
       - "3001:3001"
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/mydb
+    env_file:
+      - .env
 
   mysql:
     image: mysql:latest
@@ -36,6 +38,8 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
       - MYSQL_DB=mydb
+    env_file:
+      - .env
 
   frontend:
     build: ./react

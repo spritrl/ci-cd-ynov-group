@@ -1,6 +1,7 @@
 const express = require("express");
 var cors = require("cors");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
@@ -32,8 +33,13 @@ app.post("/users", async (req, res) => {
 });
 
 app.delete("/users/:id", async (req, res) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.sendStatus(204);
+  const { password } = req.body;
+  if (password === process.env.DELETE_PASSWORD) {
+    await User.findByIdAndDelete(req.params.id);
+    res.sendStatus(204);
+  } else {
+    res.status(401).json({ error: "Invalid password" });
+  }
 });
 
 app.listen(3001, () => {

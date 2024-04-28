@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@mysql/mydb'
@@ -58,13 +62,17 @@ def get_users():
 
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        return '', 204
+    password = request.json.get('password')
+    if password == os.getenv('DELETE_PASSWORD'):
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return '', 204
+        else:
+            return jsonify({'error': 'User not found'}), 404
     else:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'Invalid password'}), 401
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3002)

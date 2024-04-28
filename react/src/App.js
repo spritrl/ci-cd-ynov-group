@@ -4,7 +4,7 @@ import { UsersContext } from "./components/context/UserContext";
 import Form from "./components/Form/Form";
 
 function App() {
-  const port = "3001";
+  const port = "3002";
   const [showUsersList, setShowUsersList] = React.useState(false);
   const { users, deleteUser, fetchUsers } = React.useContext(UsersContext);
 
@@ -59,7 +59,12 @@ function App() {
               </div>
               <div>E-mail : {user.email}</div>
               <div>Date de naissance : {user.birthDate}</div>
-              <div onClick={() => deleteUser(user.id ?? user._id)}>Delete</div>
+              <div
+                style={{ backgroundColor: "red", cursor: "pointer" }}
+                onClick={() => deleteUser(user.id ?? user._id)}
+              >
+                Delete
+              </div>
             </div>
           ))}
         </>

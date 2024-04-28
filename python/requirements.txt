@@ -2,3 +2,4 @@ Flask
 Flask-SQLAlchemy
 mysqlclient
 Flask-CORS
+python-dotenv

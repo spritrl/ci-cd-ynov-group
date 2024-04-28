@@ -50,7 +50,7 @@ function Form() {
         postalCode,
       }),
     };
-    await fetch(`http://localhost:3001/users`, options);
+    await fetch(`http://localhost:3002/users`, options);
   };
 
   const handleSubmit = (e) => {
